@@ -1,15 +1,16 @@
 package com.android.nvtrong.myplace.activity;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,13 +18,20 @@ import android.widget.Toast;
 
 import com.android.nvtrong.myplace.ActivityUltis;
 import com.android.nvtrong.myplace.R;
+import com.android.nvtrong.myplace.data.google.GeocodingRoot;
+import com.android.nvtrong.myplace.data.google.Location;
 import com.android.nvtrong.myplace.data.model.Place;
 import com.android.nvtrong.myplace.data.model.PlaceDAO;
+import com.android.nvtrong.myplace.service.APIUltis;
+import com.android.nvtrong.myplace.service.ServiceAPI;
 
 import java.io.ByteArrayOutputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ModifyActivity extends AppCompatActivity {
     @BindView(R.id.editTextPlaceName)
@@ -37,6 +45,7 @@ public class ModifyActivity extends AppCompatActivity {
 
 
     PlaceDAO placeDAO;
+    Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +73,28 @@ public class ModifyActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void getLoaction(String address) {
+        showProgressDialog();
+        ServiceAPI serviceAPI = APIUltis.getData();
+        Call<GeocodingRoot> rootCall = serviceAPI.getLocation(address, getResources().getString(R.string.google_api_key));
+        rootCall.enqueue(new Callback<GeocodingRoot>() {
+            @Override
+            public void onResponse(Call<GeocodingRoot> call, Response<GeocodingRoot> response) {
+                GeocodingRoot geocodingRoot = response.body();
+                if (!geocodingRoot.getResults().isEmpty()) {
+                    double lat = geocodingRoot.getResults().get(0).getGeometry().getLocation().getLat();
+                    double lng = geocodingRoot.getResults().get(0).getGeometry().getLocation().getLng();
+                    location = new Location(lat, lng);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GeocodingRoot> call, Throwable t) {
+
+            }
+        });
     }
 
     public void onClick(View view) {
@@ -94,24 +125,48 @@ public class ModifyActivity extends AppCompatActivity {
         finish();
     }
 
+    ProgressDialog progressDialog;
+
+    private void showProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getResources().getString(R.string.text_progress_load));
+        progressDialog.setIndeterminate(true);
+        progressDialog.show();
+    }
+
     private void savePlace() {
-        String name = editTextPlaceName.getText().toString();
-        String address = editTextPlaceAddress.getText().toString();
-        String description = editTextDescription.getText().toString();
-        int category_id = getIntent().getIntExtra(ActivityUltis.CATEGORY_KEY_EXTRA, 0);
+
+        final String name = editTextPlaceName.getText().toString();
+        final String address = editTextPlaceAddress.getText().toString();
+        final String description = editTextDescription.getText().toString();
+
+        final int category_id = getIntent().getIntExtra(ActivityUltis.CATEGORY_KEY_EXTRA, 0);
         if (Place.validate(name, address, description)) {
-            Place place = new Place.Builder()
-                    .setName(name)
-                    .setAddress(address)
-                    .setDescription(description)
-                    .setCategoryID(category_id)
-                    .setImage(convertBitmapToByte(bitmap))
-                    .build();
-            placeDAO = PlaceDAO.getInstance(this);
-            placeDAO.insert(place);
-            Toast.makeText(ModifyActivity.this, "Save success!", Toast.LENGTH_SHORT).show();
-            setResult(RESULT_OK, getIntent());
-            finish();
+            getLoaction(name + ", " + address);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (location == null) {
+                        Toast.makeText(ModifyActivity.this, "Not a address!", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    } else {
+                        Place place = new Place.Builder()
+                                .setName(name)
+                                .setAddress(address)
+                                .setDescription(description)
+                                .setCategoryID(category_id)
+                                .setImage(convertBitmapToByte(bitmap))
+                                .build();
+                        placeDAO = PlaceDAO.getInstance(getApplicationContext());
+                        placeDAO.insert(place);
+                        progressDialog.dismiss();
+                        Toast.makeText(ModifyActivity.this, "Save success!", Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK, getIntent());
+                        finish();
+                    }
+                }
+            }, 2000);
+
         } else {
             View view = findViewById(R.id.contex_view);
             Snackbar.make(view, "Please fill in place's information!", Snackbar.LENGTH_SHORT).show();
