@@ -3,6 +3,8 @@ package com.android.nvtrong.myplace.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import android.widget.Toast;
 
 
 /**
@@ -20,8 +22,8 @@ public class PlaceSQLiteHelper extends SQLiteOpenHelper {
                     + DBUltis.COLUMN_PLACE_CATEGORY_ID + " " + DBUltis.INTEGER_DATA_TYPE + " " + DBUltis.NOT_NULL + ", "
                     + DBUltis.COLUMN_PLACE_NAME + " " + DBUltis.TEXT_DATA_TYPE + " " + DBUltis.NOT_NULL + ", "
                     + DBUltis.COLUMN_PLACE_ADDRESS + " " + DBUltis.TEXT_DATA_TYPE + " " + DBUltis.NOT_NULL + ", "
-                    + DBUltis.COLUMN_PLACE_DESCRIPTION + " " + DBUltis.TEXT_DATA_TYPE + " " + DBUltis.NOT_NULL + ", "
-                    + DBUltis.COLUMN_PLACE_IMAGE + " " + DBUltis.BLOB_DATA_TYPE + " " + DBUltis.NOT_NULL + ", "
+                    + DBUltis.COLUMN_PLACE_DESCRIPTION + " " + DBUltis.TEXT_DATA_TYPE +  ", "
+                    + DBUltis.COLUMN_PLACE_IMAGE + " " + DBUltis.BLOB_DATA_TYPE + " " +  ", "
                     + DBUltis.COLUMN_PLACE_LAT + " " + DBUltis.REAL_DATA_TYPE + " " + DBUltis.NOT_NULL + ", "
                     + DBUltis.COLUMN_PLACE_LNG + " " + DBUltis.REAL_DATA_TYPE + " " + DBUltis.NOT_NULL
                     + ")";
@@ -40,7 +42,7 @@ public class PlaceSQLiteHelper extends SQLiteOpenHelper {
                     + "('ATM')";
 
     public PlaceSQLiteHelper(Context context) {
-        super(context, DB_NAME, null, DB_VERSTION);
+        super( context, DB_NAME, null, DB_VERSTION);
     }
 
     @Override
@@ -53,6 +55,6 @@ public class PlaceSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        Log.d("11111111111111", "Co update");
     }
 }

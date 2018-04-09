@@ -25,6 +25,46 @@ public class Place {
         this.placeLng = builder.placeLng;
     }
 
+    public Place setId(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public Place setCategoryID(int categoryID) {
+        this.categoryID = categoryID;
+        return this;
+    }
+
+    public Place setImage(byte[] image) {
+        this.image = image;
+        return this;
+    }
+
+    public Place setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Place setAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public Place setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public Place setPlaceLat(double placeLat) {
+        this.placeLat = placeLat;
+        return this;
+    }
+
+    public Place setPlaceLng(double placeLng) {
+        this.placeLng = placeLng;
+        return this;
+    }
+
     public int getId() {
         return id;
     }

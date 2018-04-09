@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.android.nvtrong.myplace.data.DBUltis;
 import com.android.nvtrong.myplace.data.PlaceSQLiteHelper;
@@ -123,7 +124,7 @@ public class PlaceDAO {
         SQLiteDatabase database = placeSQLiteHelper.getReadableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DBUltis.COLUMN_PLACE_ID, place.getId());
+        contentValues.put(DBUltis.COLUMN_PLACE_CATEGORY_ID, place.getCategoryID());
         contentValues.put(DBUltis.COLUMN_PLACE_NAME, place.getName());
         contentValues.put(DBUltis.COLUMN_PLACE_ADDRESS, place.getAddress());
         contentValues.put(DBUltis.COLUMN_PLACE_DESCRIPTION, place.getDescription());
@@ -135,7 +136,7 @@ public class PlaceDAO {
         database.close();
     }
 
-    public void update(Place place) {
+    public boolean update(Place place) {
         SQLiteDatabase database = placeSQLiteHelper.getReadableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -146,14 +147,17 @@ public class PlaceDAO {
         contentValues.put(DBUltis.COLUMN_PLACE_IMAGE, place.getImage());
         contentValues.put(DBUltis.COLUMN_PLACE_LAT, place.getPlaceLat());
         contentValues.put(DBUltis.COLUMN_PLACE_LNG, place.getPlaceLng());
-        database.update(DBUltis.PLACE_TBL_NAME, contentValues, DBUltis.COLUMN_PLACE_ID + "=?", new String[]{String.valueOf(place.getId())});
+        int result = database.update(DBUltis.PLACE_TBL_NAME, contentValues, DBUltis.COLUMN_PLACE_ID + "=?", new String[]{String.valueOf(place.getId())});
         database.close();
+        return result > 0;
     }
 
-    public void delete(int idPlace) {
+    public boolean delete(int idPlace) {
         SQLiteDatabase database = placeSQLiteHelper.getReadableDatabase();
         String selection = DBUltis.COLUMN_PLACE_ID + "=?";
-        database.delete(DBUltis.PLACE_TBL_NAME, selection, new String[]{String.valueOf(idPlace)});
+        int result = database.delete(DBUltis.PLACE_TBL_NAME, selection, new String[]{String.valueOf(idPlace)});
         database.close();
+        Log.d("DDDDDDDDD", String.valueOf(result));
+        return result > 0;
     }
 }

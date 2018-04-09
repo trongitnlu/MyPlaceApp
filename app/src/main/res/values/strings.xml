@@ -6,5 +6,9 @@
     <string name="text_place_name">Place Name</string>
     <string name="text_place_address">Place Address</string>
     <string name="text_place_description">Place Description</string>
+    <string name="message_delete">Do you want to delete?</string>
+    <string name="text_positive">Yes</string>
+    <string name="text_negative">No</string>
+
 
 </resources>
