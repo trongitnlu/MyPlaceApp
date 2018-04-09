@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.nvtrong.myplace.ActivityUltis;
 import com.android.nvtrong.myplace.R;
@@ -30,6 +32,8 @@ public class PlaceActivity extends AppCompatActivity {
     ListView listViewPlace;
     @BindView(R.id.textViewNodata)
     TextView textViewNoData;
+    @BindView(R.id.loadingPanel)
+    RelativeLayout loadingPanel;
 
     private int categoryID;
     private List<Place> places = new ArrayList<>();
@@ -44,7 +48,6 @@ public class PlaceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_place);
         ButterKnife.bind(this);
         init();
-        getPlace();
     }
 
     private void init() {
@@ -55,20 +58,25 @@ public class PlaceActivity extends AppCompatActivity {
         iniProgressDialog();
 //        progressDialog.show();
         onClickPlaceItem();
+        getPlaces(categoryID);
+
+
     }
 
-    private void getPlace() {
+    private void getPlaces(final int categoryID) {
+        loadingPanel.setVisibility(View.VISIBLE);
+        textViewNoData.setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-//                places = placeDAO.getListPlaceByCategoryID(categoryID);
-                addTestData();
+//                addTestData();
+                places = placeDAO.getListPlaceByCategoryID(categoryID);
                 if (!places.isEmpty()) {
                     textViewNoData.setVisibility(View.GONE);
                 }
                 placeAdapter.updateListPlace(places);
 //                progressDialog.dismiss();
-                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                loadingPanel.setVisibility(View.GONE);
             }
         }, 1000);
     }
@@ -84,8 +92,8 @@ public class PlaceActivity extends AppCompatActivity {
                 .setPlaceLat(0)
                 .setPlaceLng(0)
                 .build();
-
-        places.add(place);
+        placeDAO = PlaceDAO.getInstance(this);
+        placeDAO.insert(place);
     }
 
     private void iniProgressDialog() {
@@ -103,7 +111,7 @@ public class PlaceActivity extends AppCompatActivity {
                 Intent intent = new Intent(PlaceActivity.this, DetailActivity.class);
                 Place place = places.get(i);
                 intent.putExtra(ActivityUltis.PLACE_KEY_PUT_EXTRA, place.getId());
-                startActivity(intent);
+                startActivityForResult(intent, ActivityUltis.REQUEST_DETAIL_PLACE);
             }
         });
     }
@@ -117,6 +125,14 @@ public class PlaceActivity extends AppCompatActivity {
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ActivityUltis.REQUEST_DETAIL_PLACE && resultCode == RESULT_OK && data != null) {
+            getPlaces(categoryID);
         }
     }
 }

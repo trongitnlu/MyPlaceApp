@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".activity.CategoriesActivity" />
         <activity android:name=".activity.PlaceActivity" />
-        <activity android:name=".activity.DetailActivity"></activity>
+        <activity android:name=".activity.DetailActivity" />
+        <activity android:name=".activity.ModifyActivity"></activity>
     </application>
 
 </manifest>
