@@ -4,23 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/contex_view"
     tools:context="com.android.nvtrong.myplace.activity.ModifyActivity">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:onClick="onClick"
         android:id="@+id/imageView"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:background="@android:color/transparent"
-        android:scaleType="fitCenter"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/logo"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo"
-        tools:ignore="ContentDescription,MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewName"
@@ -34,6 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
+        android:hint="@string/enter_place_name"
         android:id="@+id/editTextPlaceName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -61,6 +62,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextPlaceName" />
 
     <EditText
+        android:hint="@string/enter_place_address"
         android:id="@+id/editTextPlaceAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -86,6 +88,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextPlaceAddress" />
 
     <EditText
+        android:hint=""
         android:id="@+id/editTextDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -110,7 +113,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="onClick"
-        android:text="Submit"
+        android:text="SAVE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -2,8 +2,10 @@ package com.android.nvtrong.myplace.data.model;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import com.android.nvtrong.myplace.data.DBUltis;
@@ -120,7 +122,7 @@ public class PlaceDAO {
         return place;
     }
 
-    public void insert(Place place) {
+    public synchronized boolean insert(Place place) {
         SQLiteDatabase database = placeSQLiteHelper.getReadableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -132,8 +134,9 @@ public class PlaceDAO {
         contentValues.put(DBUltis.COLUMN_PLACE_LAT, place.getPlaceLat());
         contentValues.put(DBUltis.COLUMN_PLACE_LNG, place.getPlaceLng());
 
-        database.insert(DBUltis.PLACE_TBL_NAME, null, contentValues);
+        long result = database.insert(DBUltis.PLACE_TBL_NAME, null, contentValues);
         database.close();
+        return result > 0;
     }
 
     public boolean update(Place place) {
@@ -160,4 +163,5 @@ public class PlaceDAO {
         Log.d("DDDDDDDDD", String.valueOf(result));
         return result > 0;
     }
+
 }

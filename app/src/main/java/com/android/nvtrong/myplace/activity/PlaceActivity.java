@@ -120,6 +120,11 @@ public class PlaceActivity extends AppCompatActivity {
         int id = view.getId();
         switch (id) {
             case R.id.floatingActionButton:
+                Intent intent = new Intent(this, ModifyActivity.class);
+                intent.putExtra(ActivityUltis.CATEGORY_KEY_EXTRA, categoryID);
+                intent.putExtra(ActivityUltis.REQUEST_TYPE, ActivityUltis.TYPE_INSERT);
+                startActivityForResult(intent, ActivityUltis.REQUEST_INSERT);
+
                 break;
             case R.id.btnShowAllOnMap:
                 break;
@@ -131,7 +136,7 @@ public class PlaceActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ActivityUltis.REQUEST_DETAIL_PLACE && resultCode == RESULT_OK && data != null) {
+        if ((requestCode == ActivityUltis.REQUEST_DETAIL_PLACE || requestCode==ActivityUltis.REQUEST_INSERT) && resultCode == RESULT_OK && data != null) {
             getPlaces(categoryID);
         }
     }

@@ -103,6 +103,7 @@ public class DetailActivity extends AppCompatActivity {
     private void onEdit() {
         Intent intent = new Intent(this, ModifyActivity.class);
         intent.putExtra(ActivityUltis.PLACE_KEY_PUT_EXTRA, place_ID);
+        intent.putExtra(ActivityUltis.REQUEST_TYPE, ActivityUltis.TYPE_UPDATE);
         startActivityForResult(intent, ActivityUltis.RESULT_MODIFY_EXTRA);
     }
 

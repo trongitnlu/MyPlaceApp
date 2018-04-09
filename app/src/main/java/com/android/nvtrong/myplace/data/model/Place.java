@@ -1,5 +1,7 @@
 package com.android.nvtrong.myplace.data.model;
 
+import android.text.TextUtils;
+
 /**
  * Created by nvtrong on 4/4/2018.
  */
@@ -23,6 +25,11 @@ public class Place {
         this.description = builder.description;
         this.placeLat = builder.placeLat;
         this.placeLng = builder.placeLng;
+    }
+
+    public static boolean validate(String name, String address, String description) {
+        boolean result = (TextUtils.isEmpty(name) || TextUtils.isEmpty(address) || TextUtils.isEmpty(description) ? false : true);
+        return result;
     }
 
     public Place setId(int id) {
