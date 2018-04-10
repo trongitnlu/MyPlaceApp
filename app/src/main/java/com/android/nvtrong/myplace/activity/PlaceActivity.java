@@ -3,6 +3,7 @@ package com.android.nvtrong.myplace.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,8 +16,14 @@ import android.widget.Toast;
 import com.android.nvtrong.myplace.ActivityUltis;
 import com.android.nvtrong.myplace.R;
 import com.android.nvtrong.myplace.adapter.PlaceAdapter;
+import com.android.nvtrong.myplace.data.google.GPSTracker;
+import com.android.nvtrong.myplace.data.google.GeocodingRoot;
+import com.android.nvtrong.myplace.data.google.Geometry;
+import com.android.nvtrong.myplace.data.google.Result;
 import com.android.nvtrong.myplace.data.model.Place;
 import com.android.nvtrong.myplace.data.model.PlaceDAO;
+import com.android.nvtrong.myplace.service.APIUltis;
+import com.android.nvtrong.myplace.service.ServiceAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +31,9 @@ import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.android.nvtrong.myplace.R.string.text_progress_load;
 
@@ -127,16 +137,57 @@ public class PlaceActivity extends AppCompatActivity {
 
                 break;
             case R.id.btnShowAllOnMap:
+                showAllMaps();
                 break;
             default:
                 break;
         }
     }
 
+    private void showAllMaps() {
+        if (places.isEmpty()) {
+            Toast.makeText(this, "Please add a locations!", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent1 = new Intent(this, MapsActivity.class);
+            intent1.putExtra(ActivityUltis.CATEGORY_KEY_EXTRA, categoryID);
+            startActivity(intent1);
+        }
+
+    }
+
+    private void showListPlaceGoogleMaps() {
+        ServiceAPI serviceAPI = APIUltis.getData();
+        GPSTracker gpsTracker = new GPSTracker(this);
+        String nameCategory = getIntent().getStringExtra(ActivityUltis.CATEGORY_NAME_EXTRA);
+        String key = getResources().getString(R.string.google_api_key);
+        Call<GeocodingRoot> rootCall = serviceAPI.getLocationByType(gpsTracker.getStringLocation(), nameCategory, key);
+        rootCall.enqueue(new Callback<GeocodingRoot>() {
+            @Override
+            public void onResponse(Call<GeocodingRoot> call, Response<GeocodingRoot> response) {
+                GeocodingRoot geocodingRoot = response.body();
+                List<Result> results = geocodingRoot.getResults();
+                if (results == null || results.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                } else {
+                    for (Result result : results) {
+                        Place place = new Place.Builder()
+                                .setName(result.getName()).build();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GeocodingRoot> call, Throwable t) {
+
+            }
+        });
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode == ActivityUltis.REQUEST_DETAIL_PLACE || requestCode==ActivityUltis.REQUEST_INSERT) && resultCode == RESULT_OK && data != null) {
+        if ((requestCode == ActivityUltis.REQUEST_DETAIL_PLACE || requestCode == ActivityUltis.REQUEST_INSERT) && resultCode == RESULT_OK && data != null) {
             getPlaces(categoryID);
         }
     }

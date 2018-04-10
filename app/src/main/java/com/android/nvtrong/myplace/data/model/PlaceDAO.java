@@ -91,8 +91,8 @@ public class PlaceDAO {
                         .setAddress(cursor.getString(3))
                         .setDescription(cursor.getString(4))
                         .setImage(cursor.getBlob(5))
-                        .setPlaceLat(cursor.getLong(6))
-                        .setPlaceLng(cursor.getLong(7))
+                        .setPlaceLat(cursor.getDouble(6))
+                        .setPlaceLng(cursor.getDouble(7))
                         .build();
                 places.add(place);
             } while (cursor.moveToNext());

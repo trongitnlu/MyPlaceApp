@@ -14,4 +14,7 @@ public class ActivityUltis {
     public static final String TYPE_INSERT = "INSERT";
     public static final int REQUEST_INSERT = 999;
     public static final int REQUEST_IMAGE_CAPTURE = 1;
+    public static final int MY_PERMISSIONS_REQUEST_LOCAION = 10000;
+    public static final int REQUEST_PERMISSIONS_GPS_CODE = 1;
+    public static final String CATEGORY_NAME_EXTRA = "CATEGORY_NAME";
 }

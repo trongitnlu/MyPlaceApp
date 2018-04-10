@@ -51,6 +51,7 @@ public class CategoriesActivity extends AppCompatActivity {
 
     private void startPlaceActivity(int category_id) {
         Intent intent = new Intent(this, PlaceActivity.class);
+        intent.putExtra(ActivityUltis.CATEGORY_KEY_EXTRA, categories.get(category_id).getName());
         intent.putExtra(ActivityUltis.CATEGORY_KEY_EXTRA, category_id);
         startActivity(intent);
 

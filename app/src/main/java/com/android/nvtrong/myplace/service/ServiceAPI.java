@@ -1,5 +1,6 @@
 package com.android.nvtrong.myplace.service;
 
+import com.android.nvtrong.myplace.data.google.DirectionRoot;
 import com.android.nvtrong.myplace.data.google.GeocodingRoot;
 
 import retrofit2.Call;
@@ -14,5 +15,9 @@ public interface ServiceAPI {
     @GET("geocode/json")
     Call<GeocodingRoot> getLocation(@Query("address") String address, @Query("key") String key);
 
+    @GET("directions/json")
+    Call<DirectionRoot> getDirection(@Query("origin") String origin, @Query("destination") String destination);
 
+    @GET("place/nearbysearch/json")
+    Call<GeocodingRoot> getLocationByType(@Query("location") String location, @Query("radius") String radius, @Query("key") String key);
 }

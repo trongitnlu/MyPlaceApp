@@ -158,4 +158,17 @@ public class Place {
             return new Place(this);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Place{" +
+                "id=" + id +
+                ", categoryID=" + categoryID +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", description='" + description + '\'' +
+                ", placeLat=" + placeLat +
+                ", placeLng=" + placeLng +
+                '}';
+    }
 }

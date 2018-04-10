@@ -155,6 +155,8 @@ public class ModifyActivity extends AppCompatActivity {
                                 .setAddress(address)
                                 .setDescription(description)
                                 .setCategoryID(category_id)
+                                .setPlaceLat(location.getLat())
+                                .setPlaceLng(location.getLng())
                                 .setImage(convertBitmapToByte(bitmap))
                                 .build();
                         placeDAO = PlaceDAO.getInstance(getApplicationContext());
