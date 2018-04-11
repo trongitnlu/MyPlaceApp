@@ -19,5 +19,5 @@ public interface ServiceAPI {
     Call<DirectionRoot> getDirection(@Query("origin") String origin, @Query("destination") String destination);
 
     @GET("place/nearbysearch/json")
-    Call<GeocodingRoot> getLocationByType(@Query("location") String location, @Query("radius") String radius, @Query("key") String key);
+    Call<GeocodingRoot> getLocationByType(@Query("location") String location, @Query("radius") String radius,@Query("type") String type, @Query("key") String key);
 }

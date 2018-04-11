@@ -155,34 +155,6 @@ public class PlaceActivity extends AppCompatActivity {
 
     }
 
-    private void showListPlaceGoogleMaps() {
-        ServiceAPI serviceAPI = APIUltis.getData();
-        GPSTracker gpsTracker = new GPSTracker(this);
-        String nameCategory = getIntent().getStringExtra(ActivityUltis.CATEGORY_NAME_EXTRA);
-        String key = getResources().getString(R.string.google_api_key);
-        Call<GeocodingRoot> rootCall = serviceAPI.getLocationByType(gpsTracker.getStringLocation(), nameCategory, key);
-        rootCall.enqueue(new Callback<GeocodingRoot>() {
-            @Override
-            public void onResponse(Call<GeocodingRoot> call, Response<GeocodingRoot> response) {
-                GeocodingRoot geocodingRoot = response.body();
-                List<Result> results = geocodingRoot.getResults();
-                if (results == null || results.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
-                } else {
-                    for (Result result : results) {
-                        Place place = new Place.Builder()
-                                .setName(result.getName()).build();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GeocodingRoot> call, Throwable t) {
-
-            }
-        });
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -8,7 +8,6 @@ public class Result {
     private Geometry geometry;
     private String icon;
     private String name;
-    private String place_id;
     private String vicinity;
 
     public Geometry getGeometry() {
@@ -38,14 +37,6 @@ public class Result {
         return this;
     }
 
-    public String getPlace_id() {
-        return place_id;
-    }
-
-    public Result setPlace_id(String place_id) {
-        this.place_id = place_id;
-        return this;
-    }
 
     public String getVicinity() {
         return vicinity;
@@ -54,5 +45,15 @@ public class Result {
     public Result setVicinity(String vicinity) {
         this.vicinity = vicinity;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "geometry=" + geometry +
+                ", icon='" + icon + '\'' +
+                ", name='" + name + '\'' +
+                ", vicinity='" + vicinity + '\'' +
+                '}';
     }
 }

@@ -3,12 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:icon="@drawable/restaurant"
+        android:id="@+id/restaurant"
         android:title="Restaurant" />
     <item
+        android:icon="@drawable/cinema"
+        android:id="@+id/cinema"
         android:title="Cinema" />
     <item
+        android:icon="@drawable/fashion"
+        android:id="@+id/fashion"
         android:title="Fashion" />
     <item
+        android:icon="@drawable/atm"
+        android:id="@+id/atm"
         android:title="ATM" />
 
 

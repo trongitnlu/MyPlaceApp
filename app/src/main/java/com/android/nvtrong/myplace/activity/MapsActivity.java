@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
@@ -26,8 +27,11 @@ import com.android.nvtrong.myplace.R;
 import com.android.nvtrong.myplace.data.Loading;
 import com.android.nvtrong.myplace.data.google.DirectionRoot;
 import com.android.nvtrong.myplace.data.google.GPSTracker;
+import com.android.nvtrong.myplace.data.google.GeocodingRoot;
+import com.android.nvtrong.myplace.data.google.Geometry;
 import com.android.nvtrong.myplace.data.google.Leg;
 import com.android.nvtrong.myplace.data.google.Location;
+import com.android.nvtrong.myplace.data.google.Result;
 import com.android.nvtrong.myplace.data.google.Route;
 import com.android.nvtrong.myplace.data.model.Place;
 import com.android.nvtrong.myplace.data.model.PlaceDAO;
@@ -47,6 +51,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -72,6 +77,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private int categoryID;
     private List<Place> places;
 
+    private final String MAP_TYPE_SEARCH_RESTAURANT = "restaurant";
+    private final String MAP_TYPE_SEARCH_CINEMA = "movie_theater";
+    private final String MAP_TYPE_SEARCH_FASHION = "shopping_mall";
+    private final String MAP_TYPE_SEARCH_ATM = "atm";
+    private final String MAP_SEARCH_RADIUS = "500";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,13 +99,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void initNavigationView() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
-
         NavigationView navigationView = findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        Toast.makeText(MapsActivity.this, menuItem.getItemId() + "", Toast.LENGTH_SHORT).show();
+                        onOptionsItemSelected(menuItem);
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
@@ -294,13 +304,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    public void onMenuClick(View view) {
-        Toast.makeText(this, "Ngon", Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Toast.makeText(this, item.getItemId() + "", Toast.LENGTH_SHORT).show();
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.restaurant:
+                showListPlaceGoogleMaps(MAP_TYPE_SEARCH_RESTAURANT, R.drawable.restaurant_market);
+                break;
+            case R.id.fashion:
+                showListPlaceGoogleMaps(MAP_TYPE_SEARCH_FASHION, R.drawable.shopping_market);
+                break;
+            case R.id.cinema:
+                showListPlaceGoogleMaps(MAP_TYPE_SEARCH_CINEMA, R.drawable.movies_market);
+                break;
+            case R.id.atm:
+                showListPlaceGoogleMaps(MAP_TYPE_SEARCH_ATM, R.drawable.atm_market);
+                break;
+            default:
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -310,4 +332,46 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         return super.onCreateOptionsMenu(menu);
     }
+
+    private void showListPlaceGoogleMaps(String typeName, final int resource) {
+        final Loading loading = Loading.create(this);
+        loading.show();
+        ServiceAPI serviceAPI = APIUltis.getData();
+        GPSTracker gpsTracker = new GPSTracker(this);
+        String key = getResources().getString(R.string.google_api_key);
+        Call<GeocodingRoot> rootCall = serviceAPI.getLocationByType(gpsTracker.getStringLocation(), MAP_SEARCH_RADIUS, typeName, key);
+        Log.d("DDDDDDDDDDDD3", gpsTracker.getStringLocation());
+        rootCall.enqueue(new Callback<GeocodingRoot>() {
+            @Override
+            public void onResponse(Call<GeocodingRoot> call, Response<GeocodingRoot> response) {
+                GeocodingRoot geocodingRoot = response.body();
+                List<Result> results = geocodingRoot.getResults();
+                if (results == null || results.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Not Found!", Toast.LENGTH_SHORT).show();
+                } else {
+                    for (Result result : results) {
+                        Geometry geometry = result.getGeometry();
+                        LatLng latLng = new LatLng(geometry.getLocation().getLat(), geometry.getLocation().getLng());
+                        MarkerOptions markerOptions = new MarkerOptions().position(latLng)
+                                .flat(true)
+                                .icon(BitmapDescriptorFactory.fromResource(resource))
+                                .snippet(result.getVicinity())
+                                .title(result.getName());
+                        Marker marker = googleMap.addMarker(markerOptions);
+                        Log.d("DDDDDDDDDD1", result.toString());
+                    }
+                }
+                loading.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<GeocodingRoot> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
+                Log.d("DDDDDDDDDDDDD2", t.toString());
+                loading.dismiss();
+            }
+        });
+
+    }
+
 }

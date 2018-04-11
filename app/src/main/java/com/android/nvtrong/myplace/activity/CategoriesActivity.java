@@ -43,6 +43,7 @@ public class CategoriesActivity extends AppCompatActivity {
     public void init() {
         placeDAO = PlaceDAO.getInstance(this);
         categories = placeDAO.getAllCategory();
+        Log.d("DDDDDDDDDDDD", categories.toString());
         TextView[] textViews = {textViewRestaurant, textViewCinema, textViewFashion, textViewATM};
         for (int i = 0; i < textViews.length; i++) {
             textViews[i].setText(categories.get(i).getName());
@@ -51,7 +52,6 @@ public class CategoriesActivity extends AppCompatActivity {
 
     private void startPlaceActivity(int category_id) {
         Intent intent = new Intent(this, PlaceActivity.class);
-        intent.putExtra(ActivityUltis.CATEGORY_KEY_EXTRA, categories.get(category_id).getName());
         intent.putExtra(ActivityUltis.CATEGORY_KEY_EXTRA, category_id);
         startActivity(intent);
 
