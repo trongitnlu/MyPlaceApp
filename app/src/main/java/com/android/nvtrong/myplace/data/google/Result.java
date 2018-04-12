@@ -1,5 +1,7 @@
 package com.android.nvtrong.myplace.data.google;
 
+import java.util.List;
+
 /**
  * Created by nvtrong on 4/9/2018.
  */
@@ -9,6 +11,17 @@ public class Result {
     private String icon;
     private String name;
     private String vicinity;
+    private String reference;
+    private List<Photos> photos;
+
+    public List<Photos> getPhotos() {
+        return photos;
+    }
+
+    public Result setPhotos(List<Photos> photos) {
+        this.photos = photos;
+        return this;
+    }
 
     public Geometry getGeometry() {
         return geometry;
@@ -47,6 +60,15 @@ public class Result {
         return this;
     }
 
+    public String getReference() {
+        return reference;
+    }
+
+    public Result setReference(String reference) {
+        this.reference = reference;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Result{" +
@@ -54,6 +76,8 @@ public class Result {
                 ", icon='" + icon + '\'' +
                 ", name='" + name + '\'' +
                 ", vicinity='" + vicinity + '\'' +
+                ", reference='" + reference + '\'' +
+                ", photos=" + photos +
                 '}';
     }
 }

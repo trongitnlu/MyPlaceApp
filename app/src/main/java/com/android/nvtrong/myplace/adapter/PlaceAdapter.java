@@ -11,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.nvtrong.myplace.R;
+import com.android.nvtrong.myplace.data.google.MapsUltis;
 import com.android.nvtrong.myplace.data.model.Place;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class PlaceAdapter extends BaseAdapter {
         setList(list);
     }
 
-    public void updateListPlace(List<Place> list){
+    public void updateListPlace(List<Place> list) {
         setList(list);
         notifyDataSetChanged();
     }
@@ -67,10 +69,11 @@ public class PlaceAdapter extends BaseAdapter {
         }
         placeViewHolder = (PlaceViewHolder) view.getTag();
         Place place = list.get(i);
-        if(place.getImage()!=null){
-            Bitmap placeBitmap = BitmapFactory.decodeByteArray(place.getImage(),0,place.getImage().length);
-            placeViewHolder.imageViewItem.setImageBitmap(placeBitmap);
-        }
+//        if(place.getImage()!=null){
+//            Bitmap placeBitmap = BitmapFactory.decodeByteArray(place.getImage(),0,place.getImage().length);
+//            placeViewHolder.imageViewItem.setImageBitmap(placeBitmap);
+//        }
+        Picasso.get().load(place.getUrlIcon()).placeholder(R.drawable.logo).error(R.drawable.logo).into(placeViewHolder.imageViewItem);
         placeViewHolder.textViewItemPlaceName.setText(place.getName());
         placeViewHolder.textViewItemDescription.setText(place.getDescription());
         placeViewHolder.textViewItemPlaceAddress.setText(place.getAddress());

@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,6 +17,12 @@ import com.android.nvtrong.myplace.ActivityUltis;
 import com.android.nvtrong.myplace.R;
 import com.android.nvtrong.myplace.data.model.Place;
 import com.android.nvtrong.myplace.data.model.PlaceDAO;
+import com.squareup.picasso.Picasso;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,13 +41,23 @@ public class DetailActivity extends AppCompatActivity {
     private int place_ID;
     private int categoryID;
     private PlaceDAO placeDAO;
+    Place place;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_detail_a);
         ButterKnife.bind(this);
-        init();
+        getPlaceParcel();
+//        init();
+    }
+
+    private void getPlaceParcel() {
+        place = getIntent().getParcelableExtra(ActivityUltis.REQUEST_PUT_PLACE_EXTRA);
+        if (place != null) {
+            Log.d("DDDDDDDD", place.toString());
+            loadPlace(place);
+        }
     }
 
     private void init() {
@@ -62,6 +79,15 @@ public class DetailActivity extends AppCompatActivity {
         editTextDescription.setText(place.getDescription());
     }
 
+    private void loadPlace(Place place) {
+        placeDAO = PlaceDAO.getInstance(this);
+        Picasso.get().load(place.getUrlIcon()).placeholder(R.drawable.location).error(R.drawable.logo).into(imageView);
+
+        editTextPlaceName.setText(place.getName());
+        editTextPlaceAddress.setText(place.getAddress());
+        editTextDescription.setText(place.getDescription());
+    }
+
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
@@ -72,10 +98,19 @@ public class DetailActivity extends AppCompatActivity {
                 onEdit();
                 break;
             case R.id.imageButtonDirection:
+                onDirection(place);
                 break;
             default:
                 break;
         }
+    }
+
+    private void onDirection(Place place) {
+        Intent intent = new Intent(this, MapsActivity.class);
+        ArrayList<Place> places = new ArrayList<>();
+        places.add(place);
+        intent.putExtra(ActivityUltis.REQUEST_PUT_PLACE_EXTRA, places);
+        startActivity(intent);
     }
 
     private void onDelete() {

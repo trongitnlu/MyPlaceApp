@@ -1,12 +1,16 @@
 package com.android.nvtrong.myplace.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
+
+import java.util.Arrays;
 
 /**
  * Created by nvtrong on 4/4/2018.
  */
 
-public class Place {
+public class Place implements Parcelable {
     private int id;
     private int categoryID;
     private byte[] image;
@@ -15,6 +19,7 @@ public class Place {
     private String description;
     private double placeLat;
     private double placeLng;
+    private String urlIcon;
 
     public Place(Builder builder) {
         this.id = builder.id;
@@ -25,7 +30,32 @@ public class Place {
         this.description = builder.description;
         this.placeLat = builder.placeLat;
         this.placeLng = builder.placeLng;
+        this.urlIcon = builder.urlIcon;
     }
+
+    protected Place(Parcel in) {
+        id = in.readInt();
+        categoryID = in.readInt();
+        image = in.createByteArray();
+        name = in.readString();
+        address = in.readString();
+        description = in.readString();
+        placeLat = in.readDouble();
+        placeLng = in.readDouble();
+        urlIcon = in.readString();
+    }
+
+    public static final Creator<Place> CREATOR = new Creator<Place>() {
+        @Override
+        public Place createFromParcel(Parcel in) {
+            return new Place(in);
+        }
+
+        @Override
+        public Place[] newArray(int size) {
+            return new Place[size];
+        }
+    };
 
     public static boolean validate(String name, String address, String description) {
         boolean result = (TextUtils.isEmpty(name) || TextUtils.isEmpty(address) || TextUtils.isEmpty(description) ? false : true);
@@ -104,6 +134,24 @@ public class Place {
         return categoryID;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeInt(categoryID);
+        parcel.writeByteArray(image);
+        parcel.writeString(name);
+        parcel.writeString(address);
+        parcel.writeString(description);
+        parcel.writeDouble(placeLat);
+        parcel.writeDouble(placeLng);
+        parcel.writeString(urlIcon);
+    }
+
     public static class Builder {
         private int id;
         private int categoryID;
@@ -113,6 +161,7 @@ public class Place {
         private String description;
         private double placeLat;
         private double placeLng;
+        private String urlIcon;
 
         public Builder setId(int id) {
             this.id = id;
@@ -154,9 +203,27 @@ public class Place {
             return this;
         }
 
+        public String getUrlIcon() {
+            return urlIcon;
+        }
+
+        public Builder setUrlIcon(String urlIcon) {
+            this.urlIcon = urlIcon;
+            return this;
+        }
+
         public Place build() {
             return new Place(this);
         }
+    }
+
+    public String getUrlIcon() {
+        return urlIcon;
+    }
+
+    public Place setUrlIcon(String urlIcon) {
+        this.urlIcon = urlIcon;
+        return this;
     }
 
     @Override
@@ -164,11 +231,13 @@ public class Place {
         return "Place{" +
                 "id=" + id +
                 ", categoryID=" + categoryID +
+                ", image=" + Arrays.toString(image) +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", description='" + description + '\'' +
                 ", placeLat=" + placeLat +
                 ", placeLng=" + placeLng +
+                ", urlIcon='" + urlIcon + '\'' +
                 '}';
     }
 }

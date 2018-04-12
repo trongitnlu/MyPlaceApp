@@ -17,4 +17,9 @@ public class ActivityUltis {
     public static final int MY_PERMISSIONS_REQUEST_LOCAION = 10000;
     public static final int REQUEST_PERMISSIONS_GPS_CODE = 1;
     public static final String CATEGORY_NAME_EXTRA = "CATEGORY_NAME";
+    public static final String MAP_TYPE_SEARCH_RESTAURANT = "restaurant";
+    public static final String MAP_TYPE_SEARCH_CINEMA = "movie_theater";
+    public static final String MAP_TYPE_SEARCH_FASHION = "shopping_mall";
+    public static final String MAP_TYPE_SEARCH_ATM = "atm";
+    public static final String REQUEST_PUT_PLACE_EXTRA = "PLACE_EXTRA";
 }

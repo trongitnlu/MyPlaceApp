@@ -52,25 +52,37 @@ public class CategoriesActivity extends AppCompatActivity {
 
     private void startPlaceActivity(int category_id) {
         Intent intent = new Intent(this, PlaceActivity.class);
+        intent.putExtra(ActivityUltis.CATEGORY_NAME_EXTRA, categories.get(category_id).getName());
         intent.putExtra(ActivityUltis.CATEGORY_KEY_EXTRA, category_id);
         startActivity(intent);
 
+    }
+
+    private void startPlaceActivity(String type) {
+        Intent intent = new Intent(this, PlaceActivity.class);
+        intent.putExtra(ActivityUltis.CATEGORY_NAME_EXTRA, type);
+        startActivity(intent);
     }
 
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.layoutRestaurant:
-                startPlaceActivity(categories.get(0).getId());
+//                startPlaceActivity(categories.get(0).getId());
+                startPlaceActivity(ActivityUltis.MAP_TYPE_SEARCH_RESTAURANT);
                 break;
             case R.id.layoutCinema:
-                startPlaceActivity(categories.get(1).getId());
+//                startPlaceActivity(categories.get(1).getId());
+                startPlaceActivity(ActivityUltis.MAP_TYPE_SEARCH_CINEMA);
                 break;
             case R.id.layoutFashion:
-                startPlaceActivity(categories.get(2).getId());
+//                startPlaceActivity(categories.get(2).getId());
+                startPlaceActivity(ActivityUltis.MAP_TYPE_SEARCH_FASHION);
+
                 break;
             case R.id.layoutATM:
-                startPlaceActivity(categories.get(3).getId());
+//                startPlaceActivity(categories.get(3).getId());
+                startPlaceActivity(ActivityUltis.MAP_TYPE_SEARCH_ATM);
                 break;
             default:
                 break;

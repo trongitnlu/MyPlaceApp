@@ -9,56 +9,59 @@
     tools:context="com.android.nvtrong.myplace.activity.PlaceActivity">
 
     <FrameLayout
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_gravity="center"
         android:layout_weight="9">
 
         <ListView
-            android:layout_gravity="center"
             android:id="@+id/listViewPlace"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></ListView>
+            android:layout_height="match_parent"
+            android:layout_gravity="center"></ListView>
 
         <TextView
-            android:layout_gravity="center"
             android:id="@+id/textViewNodata"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="@string/text_no_data" />
+
         <android.support.design.widget.FloatingActionButton
-            android:onClick="onClick"
-            android:layout_margin="8dp"
-            android:layout_gravity="right|bottom"
+            android:visibility="gone"
             android:id="@+id/floatingActionButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:layout_margin="8dp"
             android:clickable="true"
+            android:onClick="onClick"
             app:srcCompat="@drawable/add_blue" />
     </FrameLayout>
 
     <Button
-        android:onClick="onClick"
         android:id="@+id/btnShowAllOnMap"
         style="@android:style/Widget.Material.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:onClick="onClick"
         android:text="@string/show_all_on_maps"
-        tools:targetApi="m"
-        tools:ignore="OnClick" />
+        tools:ignore="OnClick"
+        tools:targetApi="m" />
+
     <RelativeLayout
         android:id="@+id/loadingPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center" >
+        android:gravity="center"
+        android:visibility="gone">
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true" />
     </RelativeLayout>
-
 
 
 </LinearLayout>

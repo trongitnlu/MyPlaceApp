@@ -15,4 +15,9 @@ public class Geometry {
         this.location = location;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return location.toString();
+    }
 }

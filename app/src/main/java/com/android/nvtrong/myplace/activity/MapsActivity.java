@@ -59,7 +59,6 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -123,9 +122,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void init() {
         loading = Loading.create(this);
         loading.show();
-        categoryID = getIntent().getIntExtra(ActivityUltis.CATEGORY_KEY_EXTRA, 0);
-        placeDAO = PlaceDAO.getInstance(this);
-        places = placeDAO.getListPlaceByCategoryID(categoryID);
+//        categoryID = getIntent().getIntExtra(ActivityUltis.CATEGORY_KEY_EXTRA, 0);
+//        placeDAO = PlaceDAO.getInstance(this);
+//        places = placeDAO.getListPlaceByCategoryID(categoryID);
+        places = getIntent().getParcelableArrayListExtra(ActivityUltis.REQUEST_PUT_PLACE_EXTRA);
+        Log.d("DDDDDDDDDDDDDDDD4", String.valueOf(places.size()));
     }
 
     private void buildApiClient() {
@@ -161,7 +162,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(final GoogleMap googleMap) {
         this.googleMap = googleMap;
         this.googleMap.setOnMarkerClickListener(this);
-        displayPlaceOnMaps();
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             buildApiClient();
             this.googleMap.setMyLocationEnabled(true);
@@ -171,6 +172,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ActivityUltis.REQUEST_PERMISSIONS_GPS_CODE);
             }
         }
+        displayPlaceOnMaps();
     }
 
 
@@ -197,14 +199,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                for (Place e : places) {
-                    LatLng placeLatLng = new LatLng(e.getPlaceLat(), e.getPlaceLng());
-                    googleMap.addMarker(new MarkerOptions().position(placeLatLng).title(e.getName()));
-//                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(placeLatLng, 10));
-                    loading.dismiss();
+                if (places != null) {
+                    showOnMaps(places);
                 }
+                loading.dismiss();
             }
-        }, 2000);
+        }, 1000);
     }
 
     private void getLocation() {
@@ -224,6 +224,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Polyline polyline;
 
     private void getDirection(LatLng origin, LatLng destination) {
+        Log.d("DDD_GetDirecting", "Please");
         ServiceAPI serviceAPI = APIUltis.getData();
         String originAddress = String.valueOf(origin.latitude) + "," + String.valueOf(origin.longitude);
         String destinationAddress = String.valueOf(destination.latitude) + "," + String.valueOf(destination.longitude);
@@ -245,7 +246,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     PolylineOptions polylineOptions = new PolylineOptions().addAll(decodePath);
                     polyline = googleMap.addPolyline(polylineOptions);
                     polyline.setColor(Color.BLUE);
-                    polyline.setGeodesic(true);
                 }
             }
 
@@ -358,7 +358,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 .snippet(result.getVicinity())
                                 .title(result.getName());
                         Marker marker = googleMap.addMarker(markerOptions);
-                        Log.d("DDDDDDDDDD1", result.toString());
                     }
                 }
                 loading.dismiss();
@@ -371,6 +370,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 loading.dismiss();
             }
         });
+
+    }
+
+    public void showOnMaps(List<Place> list) {
+        for (Place place : list) {
+            LatLng latLng = new LatLng(place.getPlaceLat(), place.getPlaceLng());
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng)
+                    .flat(true)
+                    .snippet(place.getAddress())
+                    .title(place.getName());
+            googleMap.addMarker(markerOptions);
+            if (list.size() == 1) {
+                LatLng currentLatLng = new LatLng(currentLocation.getLat(), currentLocation.getLng());
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+                getDirection(latLng, currentLatLng);
+            }
+            Log.d("DDDDShowOnMap", place.toString() + "--" + list.size());
+        }
+        Log.d("DDDDShowOnMap", "Exit");
 
     }
 
