@@ -20,17 +20,20 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activity.CategoriesActivity" />
         <activity android:name=".activity.PlaceActivity" />
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.ModifyActivity" />
         <activity android:name=".activity.MapsActivity"></activity>
+        <activity android:name=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
