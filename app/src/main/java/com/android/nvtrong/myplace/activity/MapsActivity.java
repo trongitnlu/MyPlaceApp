@@ -4,16 +4,13 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -88,33 +85,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         init();
-        initNavigationView();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-    }
-
-    DrawerLayout mDrawerLayout;
-
-    private void initNavigationView() {
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.navigation);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        onOptionsItemSelected(menuItem);
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
-                        // close drawer when item is tapped
-                        mDrawerLayout.closeDrawers();
-
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-
-                        return true;
-                    }
-                });
     }
 
     Loading loading;
@@ -126,7 +99,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        placeDAO = PlaceDAO.getInstance(this);
 //        places = placeDAO.getListPlaceByCategoryID(categoryID);
         places = getIntent().getParcelableArrayListExtra(ActivityUltis.REQUEST_PUT_PLACE_EXTRA);
-        Log.d("DDDDDDDDDDDDDDDD4", String.valueOf(places.size()));
     }
 
     private void buildApiClient() {
@@ -302,28 +274,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // The user canceled the operation.
             }
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.restaurant:
-                showListPlaceGoogleMaps(MAP_TYPE_SEARCH_RESTAURANT, R.drawable.restaurant_market);
-                break;
-            case R.id.fashion:
-                showListPlaceGoogleMaps(MAP_TYPE_SEARCH_FASHION, R.drawable.shopping_market);
-                break;
-            case R.id.cinema:
-                showListPlaceGoogleMaps(MAP_TYPE_SEARCH_CINEMA, R.drawable.movies_market);
-                break;
-            case R.id.atm:
-                showListPlaceGoogleMaps(MAP_TYPE_SEARCH_ATM, R.drawable.atm_market);
-                break;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

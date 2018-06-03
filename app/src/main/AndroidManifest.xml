@@ -23,7 +23,10 @@
 
         </activity>
         <activity android:name=".activity.CategoriesActivity" />
-        <activity android:name=".activity.PlaceActivity" />
+        <activity android:name=".activity.PlaceActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+
+        </activity>
         <activity android:name=".activity.DetailActivity" />
         <activity android:name=".activity.ModifyActivity" />
         <activity android:name=".activity.MapsActivity"></activity>

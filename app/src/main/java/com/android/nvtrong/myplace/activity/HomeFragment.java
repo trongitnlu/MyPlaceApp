@@ -15,7 +15,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -25,14 +24,10 @@ import com.android.nvtrong.myplace.R;
 import com.android.nvtrong.myplace.data.Loading;
 import com.android.nvtrong.myplace.data.google.DirectionRoot;
 import com.android.nvtrong.myplace.data.google.GPSTracker;
-import com.android.nvtrong.myplace.data.google.GeocodingRoot;
-import com.android.nvtrong.myplace.data.google.Geometry;
 import com.android.nvtrong.myplace.data.google.Leg;
 import com.android.nvtrong.myplace.data.google.Location;
-import com.android.nvtrong.myplace.data.google.Result;
 import com.android.nvtrong.myplace.data.google.Route;
 import com.android.nvtrong.myplace.data.model.Place;
-import com.android.nvtrong.myplace.data.model.PlaceDAO;
 import com.android.nvtrong.myplace.service.APIUltis;
 import com.android.nvtrong.myplace.service.ServiceAPI;
 import com.google.android.gms.common.ConnectionResult;
@@ -48,7 +43,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -82,8 +76,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     private LocationRequest locationRequest;
     private Location currentLocation;
 
-    private PlaceDAO placeDAO;
-    private int categoryID;
     private List<Place> places;
 
     private final String MAP_TYPE_SEARCH_RESTAURANT = "restaurant";
@@ -127,6 +119,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
                             buildApiClient();
                         }
                         googleMap.setMyLocationEnabled(true);
+                        getLocation();
                     } else {
                         Toast.makeText(getContext(), "Permission Error!", Toast.LENGTH_SHORT).show();
                     }
@@ -278,68 +271,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
                 // The user canceled the operation.
             }
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.restaurant:
-                showListPlaceGoogleMaps(MAP_TYPE_SEARCH_RESTAURANT, R.drawable.restaurant_market);
-                break;
-            case R.id.fashion:
-                showListPlaceGoogleMaps(MAP_TYPE_SEARCH_FASHION, R.drawable.shopping_market);
-                break;
-            case R.id.cinema:
-                showListPlaceGoogleMaps(MAP_TYPE_SEARCH_CINEMA, R.drawable.movies_market);
-                break;
-            case R.id.atm:
-                showListPlaceGoogleMaps(MAP_TYPE_SEARCH_ATM, R.drawable.atm_market);
-                break;
-            default:
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void showListPlaceGoogleMaps(String typeName, final int resource) {
-        final Loading loading = Loading.create(getContext());
-        loading.show();
-        ServiceAPI serviceAPI = APIUltis.getData();
-        GPSTracker gpsTracker = new GPSTracker(getContext());
-        String key = getResources().getString(R.string.google_api_key);
-        Call<GeocodingRoot> rootCall = serviceAPI.getLocationByType(gpsTracker.getStringLocation(), MAP_SEARCH_RADIUS, typeName, key);
-        Log.d("DDDDDDDDDDDD3", gpsTracker.getStringLocation());
-        rootCall.enqueue(new Callback<GeocodingRoot>() {
-            @Override
-            public void onResponse(Call<GeocodingRoot> call, Response<GeocodingRoot> response) {
-                GeocodingRoot geocodingRoot = response.body();
-                List<Result> results = geocodingRoot.getResults();
-                if (results == null || results.isEmpty()) {
-                    Toast.makeText(getContext(), "Not Found!", Toast.LENGTH_SHORT).show();
-                } else {
-                    for (Result result : results) {
-                        Geometry geometry = result.getGeometry();
-                        LatLng latLng = new LatLng(geometry.getLocation().getLat(), geometry.getLocation().getLng());
-                        MarkerOptions markerOptions = new MarkerOptions().position(latLng)
-                                .flat(true)
-                                .icon(BitmapDescriptorFactory.fromResource(resource))
-                                .snippet(result.getVicinity())
-                                .title(result.getName());
-                        Marker marker = googleMap.addMarker(markerOptions);
-                    }
-                }
-                loading.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<GeocodingRoot> call, Throwable t) {
-                Toast.makeText(getContext(), "ERROR", Toast.LENGTH_SHORT).show();
-                Log.d("DDDDDDDDDDDDD2", t.toString());
-                loading.dismiss();
-            }
-        });
-
     }
 
     public void showOnMaps(List<Place> list) {
