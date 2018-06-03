@@ -86,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_food:
                 startPlaceActivity(ActivityUltis.MAP_TYPE_SEARCH_RESTAURANT);
                 break;
+            case R.id.nav_coffee:
+                startPlaceActivity(ActivityUltis.MAP_TYPE_SEARCH_CAFE);
+                break;
         }
         return false;
     }
