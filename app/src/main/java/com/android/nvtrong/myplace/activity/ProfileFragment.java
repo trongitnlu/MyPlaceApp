@@ -19,7 +19,7 @@ import com.android.nvtrong.myplace.R;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
-    public static final String TITLE = "Profile";
+    public static final String TITLE = "Save";
 
     public static ProfileFragment newInstance() {
 

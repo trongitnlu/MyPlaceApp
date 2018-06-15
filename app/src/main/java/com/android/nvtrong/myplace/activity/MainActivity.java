@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -22,7 +23,7 @@ import com.android.nvtrong.myplace.viewModel.MainViewModel;
 import com.android.nvtrong.myplace.viewModel.ViewPagerAdapter;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Toolbar.OnMenuItemClickListener {
     ActivityMainBinding binding;
     MainViewModel viewModel;
     DrawerLayout mDrawerLayout;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPagerAdapter mViewPagerAdapter;
     private TabLayout mTabLayout;
     private NavigationView navigationView;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +39,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setupBinding();
         setupView();
         setListener();
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setupMenuToolbar();
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
@@ -97,4 +100,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.putExtra(ActivityUltis.CATEGORY_NAME_EXTRA, type);
         startActivity(intent);
     }
+    private void setupMenuToolbar(){
+        toolbar.inflateMenu(R.menu.menu);
+        toolbar.setOnMenuItemClickListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        switch (id){
+            case R.id.mnu_setting:
+                Toast.makeText(this, "Ngon", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return false;
+    }
+
 }

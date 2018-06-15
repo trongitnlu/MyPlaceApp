@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="D:\TRONG\ThietBiDiDong\MyPlaceApp\app\src\main\assets"/><source path="D:\TRONG\ThietBiDiDong\MyPlaceApp\app\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="D:\TRONG\ThietBiDiDong\MyPlaceApp\app\src\debug\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="D:\MyPlaceApp\app\src\main\assets"/><source path="D:\MyPlaceApp\app\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="D:\MyPlaceApp\app\src\debug\assets"/></dataSet></merger>

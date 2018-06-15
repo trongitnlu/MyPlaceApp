@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\TRONG\\ThietBiDiDong\\MyPlaceApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v24\\values-v24.xml",
+            "outputFile": "D:\\MyPlaceApp\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v24\\values-v24.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\MyPC\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\990125f8d142bd8bec36e6f42704c2c2\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\nvtrong\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\3f75cb651781ad3e8a80b1bfe3c8537e\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7",
                         "startColumns": "4,4,4,4,4,4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\MyPC\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-26.1.0.aar\\08873c21d129b5674f518216c846751f\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\nvtrong\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-26.1.0.aar\\b26bcd1235a19b87857399fc652e09dc\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
