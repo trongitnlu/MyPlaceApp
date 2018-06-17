@@ -6,17 +6,17 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.nvtrong.myplace.ActivityUltis;
@@ -24,11 +24,8 @@ import com.android.nvtrong.myplace.R;
 import com.android.nvtrong.myplace.data.Loading;
 import com.android.nvtrong.myplace.data.google.DirectionRoot;
 import com.android.nvtrong.myplace.data.google.GPSTracker;
-import com.android.nvtrong.myplace.data.google.GeocodingRoot;
-import com.android.nvtrong.myplace.data.google.Geometry;
 import com.android.nvtrong.myplace.data.google.Leg;
 import com.android.nvtrong.myplace.data.google.Location;
-import com.android.nvtrong.myplace.data.google.Result;
 import com.android.nvtrong.myplace.data.google.Route;
 import com.android.nvtrong.myplace.data.model.Place;
 import com.android.nvtrong.myplace.data.model.PlaceDAO;
@@ -41,14 +38,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -58,6 +53,8 @@ import com.google.maps.android.PolyUtil;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -68,17 +65,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleApiClient apiClient;
     private LocationRequest locationRequest;
     private Location currentLocation;
-
-    private PlaceDAO placeDAO;
-    private int categoryID;
     private List<Place> places;
-
-    private final String MAP_TYPE_SEARCH_RESTAURANT = "restaurant";
-    private final String MAP_TYPE_SEARCH_CINEMA = "movie_theater";
-    private final String MAP_TYPE_SEARCH_FASHION = "shopping_mall";
-    private final String MAP_TYPE_SEARCH_ATM = "atm";
-    private final String MAP_SEARCH_RADIUS = "500";
-
+    private ImageView btnSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,12 +81,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Loading loading;
 
     private void init() {
+        btnSearch = findViewById(R.id.imgbtnsearch);
         loading = Loading.create(this);
         loading.show();
-//        categoryID = getIntent().getIntExtra(ActivityUltis.CATEGORY_KEY_EXTRA, 0);
-//        placeDAO = PlaceDAO.getInstance(this);
-//        places = placeDAO.getListPlaceByCategoryID(categoryID);
         places = getIntent().getParcelableArrayListExtra(ActivityUltis.REQUEST_PUT_PLACE_EXTRA);
+        btnSearch.setOnClickListener((view)-> ClickSearch(view));
     }
 
     private void buildApiClient() {
@@ -281,46 +268,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         getMenuInflater().inflate(R.menu.my_navigation_items, menu);
 
         return super.onCreateOptionsMenu(menu);
-    }
-
-    private void showListPlaceGoogleMaps(String typeName, final int resource) {
-        final Loading loading = Loading.create(this);
-        loading.show();
-        ServiceAPI serviceAPI = APIUltis.getData();
-        GPSTracker gpsTracker = new GPSTracker(this);
-        String key = getResources().getString(R.string.google_api_key);
-        Call<GeocodingRoot> rootCall = serviceAPI.getLocationByType(gpsTracker.getStringLocation(), MAP_SEARCH_RADIUS, typeName, key);
-        Log.d("DDDDDDDDDDDD3", gpsTracker.getStringLocation());
-        rootCall.enqueue(new Callback<GeocodingRoot>() {
-            @Override
-            public void onResponse(Call<GeocodingRoot> call, Response<GeocodingRoot> response) {
-                GeocodingRoot geocodingRoot = response.body();
-                List<Result> results = geocodingRoot.getResults();
-                if (results == null || results.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Not Found!", Toast.LENGTH_SHORT).show();
-                } else {
-                    for (Result result : results) {
-                        Geometry geometry = result.getGeometry();
-                        LatLng latLng = new LatLng(geometry.getLocation().getLat(), geometry.getLocation().getLng());
-                        MarkerOptions markerOptions = new MarkerOptions().position(latLng)
-                                .flat(true)
-                                .icon(BitmapDescriptorFactory.fromResource(resource))
-                                .snippet(result.getVicinity())
-                                .title(result.getName());
-                        Marker marker = googleMap.addMarker(markerOptions);
-                    }
-                }
-                loading.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<GeocodingRoot> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "ERROR", Toast.LENGTH_SHORT).show();
-                Log.d("DDDDDDDDDDDDD2", t.toString());
-                loading.dismiss();
-            }
-        });
-
     }
 
     public void showOnMaps(List<Place> list) {

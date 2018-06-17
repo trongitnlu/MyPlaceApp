@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.nvtrong.myplace.ActivityUltis;
@@ -75,26 +76,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     private GoogleApiClient apiClient;
     private LocationRequest locationRequest;
     private Location currentLocation;
-
+    private ImageView btnSearch;
     private List<Place> places;
-
-    private final String MAP_TYPE_SEARCH_RESTAURANT = "restaurant";
-    private final String MAP_TYPE_SEARCH_CINEMA = "movie_theater";
-    private final String MAP_TYPE_SEARCH_FASHION = "shopping_mall";
-    private final String MAP_TYPE_SEARCH_ATM = "atm";
-    private final String MAP_SEARCH_RADIUS = "500";
-
 
     Loading loading;
 
     private void init() {
         loading = Loading.create(getContext());
         loading.show();
-//        categoryID = getIntent().getIntExtra(ActivityUltis.CATEGORY_KEY_EXTRA, 0);
-//        placeDAO = PlaceDAO.getInstance(this);
-//        places = placeDAO.getListPlaceByCategoryID(categoryID);
         places = new ArrayList<>();
-        Log.d("DDDDDDDDDDDDDDDD4", String.valueOf(places.size()));
     }
 
     private void buildApiClient() {
@@ -302,8 +292,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.activity_maps, container, false);
+        View view = inflater.inflate(R.layout.activity_maps, container, false);
+        btnSearch = view.findViewById(R.id.imgbtnsearch);
+        btnSearch.setOnClickListener((view1) -> ClickSearch(view1));
+        return view;
     }
 
     @Override
