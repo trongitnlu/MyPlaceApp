@@ -25,7 +25,8 @@ public class PlaceSQLiteHelper extends SQLiteOpenHelper {
                     + DBUltis.COLUMN_PLACE_DESCRIPTION + " " + DBUltis.TEXT_DATA_TYPE +  ", "
                     + DBUltis.COLUMN_PLACE_IMAGE + " " + DBUltis.BLOB_DATA_TYPE + " " +  ", "
                     + DBUltis.COLUMN_PLACE_LAT + " " + DBUltis.REAL_DATA_TYPE + " "  + ", "
-                    + DBUltis.COLUMN_PLACE_LNG + " " + DBUltis.REAL_DATA_TYPE + " "
+                    + DBUltis.COLUMN_PLACE_LNG + " " + DBUltis.REAL_DATA_TYPE + " " + ", "
+                    + DBUltis.COLUMN_PLACE_URLICON + " " + DBUltis.TEXT_DATA_TYPE
                     + ")";
     public static final String CREATE_CATEGORY_TBL_SQL =
             "CREATE TABLE " + DBUltis.CATEGORY_TBL_NAME + "("

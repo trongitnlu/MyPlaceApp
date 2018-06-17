@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.android.nvtrong.myplace.activity.HomeFragment;
-import com.android.nvtrong.myplace.activity.ProfileFragment;
+import com.android.nvtrong.myplace.activity.SaveFragment;
 
 
 public class ViewPagerAdapter  extends FragmentStatePagerAdapter {
@@ -23,7 +23,7 @@ public class ViewPagerAdapter  extends FragmentStatePagerAdapter {
             case 0:
                 return HomeFragment.newInstance();
             case 1:
-                return ProfileFragment.newInstance();
+                return SaveFragment.newInstance();
 //            case 2:
 //                return SettingsFragment.newInstance();
         }
@@ -42,7 +42,7 @@ public class ViewPagerAdapter  extends FragmentStatePagerAdapter {
                 return HomeFragment.TITLE;
 
             case 1:
-                return ProfileFragment.TITLE;
+                return SaveFragment.TITLE;
 
 //            case 2:
 //                return SettingsFragment.TITLE;

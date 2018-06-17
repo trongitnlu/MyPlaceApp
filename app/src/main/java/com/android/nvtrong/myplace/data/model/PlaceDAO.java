@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.nfc.Tag;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.nvtrong.myplace.data.DBUltis;
 import com.android.nvtrong.myplace.data.PlaceSQLiteHelper;
@@ -69,6 +71,7 @@ public class PlaceDAO {
                         .setImage(cursor.getBlob(5))
                         .setPlaceLat(cursor.getLong(6))
                         .setPlaceLng(cursor.getLong(7))
+                        .setUrlIcon(cursor.getString(8))
                         .build();
                 places.add(place);
             } while (cursor.moveToNext());
@@ -116,27 +119,44 @@ public class PlaceDAO {
                         .setImage(cursor.getBlob(5))
                         .setPlaceLat(cursor.getLong(6))
                         .setPlaceLng(cursor.getLong(7))
+                        .setUrlIcon(cursor.getString(8))
                         .build();
             } while (cursor.moveToNext());
         }
         return place;
     }
 
+    public boolean checkPlace(List<Place> list, Place place2){
+        for (Place place1 : list) {
+            if (place1.getName().equals(place2.getName()) && place1.getAddress().equals(place2.getAddress())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public synchronized boolean insert(Place place) {
-        SQLiteDatabase database = placeSQLiteHelper.getReadableDatabase();
+        boolean a = false;
+        List<Place> list = getAllPlace();
+        //ds rong
+        if (list.isEmpty() || ! checkPlace(list,place)) {
+            SQLiteDatabase database = placeSQLiteHelper.getReadableDatabase();
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(DBUltis.COLUMN_PLACE_CATEGORY_ID, place.getCategoryID());
-        contentValues.put(DBUltis.COLUMN_PLACE_NAME, place.getName());
-        contentValues.put(DBUltis.COLUMN_PLACE_ADDRESS, place.getAddress());
-        contentValues.put(DBUltis.COLUMN_PLACE_DESCRIPTION, place.getDescription());
-        contentValues.put(DBUltis.COLUMN_PLACE_IMAGE, place.getImage());
-        contentValues.put(DBUltis.COLUMN_PLACE_LAT, place.getPlaceLat());
-        contentValues.put(DBUltis.COLUMN_PLACE_LNG, place.getPlaceLng());
-
-        long result = database.insert(DBUltis.PLACE_TBL_NAME, null, contentValues);
-        database.close();
-        return result > 0;
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(DBUltis.COLUMN_PLACE_CATEGORY_ID, place.getCategoryID());
+            contentValues.put(DBUltis.COLUMN_PLACE_NAME, place.getName());
+            contentValues.put(DBUltis.COLUMN_PLACE_ADDRESS, place.getAddress());
+            contentValues.put(DBUltis.COLUMN_PLACE_DESCRIPTION, place.getDescription());
+            contentValues.put(DBUltis.COLUMN_PLACE_IMAGE, place.getImage());
+            contentValues.put(DBUltis.COLUMN_PLACE_LAT, place.getPlaceLat());
+            contentValues.put(DBUltis.COLUMN_PLACE_LNG, place.getPlaceLng());
+            contentValues.put(DBUltis.COLUMN_PLACE_URLICON, place.getUrlIcon());
+            Log.d("danh sach trong", "khong giong nhau");
+            long result = database.insert(DBUltis.PLACE_TBL_NAME, null, contentValues);
+            database.close();
+            a = result > 0;
+        }
+        return a;
     }
 
     public boolean update(Place place) {
@@ -150,6 +170,7 @@ public class PlaceDAO {
         contentValues.put(DBUltis.COLUMN_PLACE_IMAGE, place.getImage());
         contentValues.put(DBUltis.COLUMN_PLACE_LAT, place.getPlaceLat());
         contentValues.put(DBUltis.COLUMN_PLACE_LNG, place.getPlaceLng());
+
         int result = database.update(DBUltis.PLACE_TBL_NAME, contentValues, DBUltis.COLUMN_PLACE_ID + "=?", new String[]{String.valueOf(place.getId())});
         database.close();
         return result > 0;
