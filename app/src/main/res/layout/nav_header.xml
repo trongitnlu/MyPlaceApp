@@ -2,13 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="192dp"
-    android:background="@mipmap/ic_launcher_foreground"
+    android:background="@drawable/cover"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:orientation="vertical"
     android:gravity="bottom">
 
     <TextView
+        android:textStyle="italic"
+        android:textSize="20dp"
+        android:textColor="@color/colorPrimary"
+        android:text="@string/places_maps_gps_tracking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
