@@ -137,14 +137,14 @@ public class PlaceActivity extends AppCompatActivity {
     }
 
     private void onClickPlaceItem1() {
-        listViewPlace.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(PlaceActivity.this, DetailActivity.class);
-                intent.putExtra(ActivityUltis.REQUEST_PUT_PLACE_EXTRA, places.get(i));
-                startActivityForResult(intent, ActivityUltis.REQUEST_DETAIL_PLACE);
-            }
-        });
+//        listViewPlace.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Intent intent = new Intent(PlaceActivity.this, DetailActivity.class);
+//                intent.putExtra(ActivityUltis.REQUEST_PUT_PLACE_EXTRA, places.get(i));
+//                startActivityForResult(intent, ActivityUltis.REQUEST_DETAIL_PLACE);
+//            }
+//        });
     }
 
     public void onClick(View view) {
