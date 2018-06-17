@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.nvtrong.myplace.R;
+import com.android.nvtrong.myplace.extension.MyApplication;
 import com.android.nvtrong.myplace.extension.SharePreferences;
 
 public class SettingFragment extends DialogFragment {
@@ -31,14 +32,13 @@ public class SettingFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_setting, container, false);
         Button button = view.findViewById(R.id.btn_setting);
         EditText editText = view.findViewById(R.id.edit_radius);
+        editText.setText(SharePreferences.getPreferencesRadius(MyApplication.context)+"");
         button.setOnClickListener(new View.OnClickListener() {
-            @TargetApi(Build.VERSION_CODES.M)
-            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                SharePreferences.setPreferencesRadius(getContext(), Integer.parseInt(editText.getText().toString()));
-                int a = SharePreferences.getPreferencesRadius(getContext());
-                Toast.makeText(getContext(), "Radius search: "+a, Toast.LENGTH_SHORT).show();
+                SharePreferences.setPreferencesRadius(MyApplication.context, Integer.parseInt(editText.getText().toString()));
+                int a = SharePreferences.getPreferencesRadius(MyApplication.context);
+                Toast.makeText(MyApplication.context, "Radius search: "+a, Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });
