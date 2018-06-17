@@ -14,6 +14,7 @@ public class DBUltis {
     public static final String COLUMN_PLACE_LAT = "latitude";
     public static final String COLUMN_PLACE_LNG = "longtitude";
     public static final String COLUMN_PLACE_CATEGORY_ID = "categoryID";
+    public static final String COLUMN_PLACE_URLICON = "urlicon";
 
     public static final String CATEGORY_TBL_NAME = "category";
     public static final String COLUMN_CATEGORY_ID = "id";
