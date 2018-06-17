@@ -9,7 +9,7 @@
         android:id="@+id/imageItemPlace"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:src="@drawable/logo"
         app:civ_border_color="@color/colorWhite"
@@ -46,6 +46,25 @@
         android:text="Place Description"
         app:layout_constraintStart_toEndOf="@+id/imageItemPlace"
         app:layout_constraintTop_toBottomOf="@+id/textViewItemPlaceAddress" />
+
+    <ImageButton
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:descendantFocusability="blocksDescendants"
+        android:visibility="gone"
+        android:id="@+id/btn_removePlace"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_remove"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewItemPlaceName"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -1,18 +1,26 @@
 package com.android.nvtrong.myplace.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.nvtrong.myplace.ActivityUltis;
 import com.android.nvtrong.myplace.R;
+import com.android.nvtrong.myplace.activity.DetailActivity;
 import com.android.nvtrong.myplace.data.google.MapsUltis;
 import com.android.nvtrong.myplace.data.model.Place;
+import com.android.nvtrong.myplace.data.model.PlaceDAO;
+import com.android.nvtrong.myplace.extension.MyApplication;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -27,12 +35,16 @@ import butterknife.ButterKnife;
 public class PlaceAdapter extends BaseAdapter {
     private Context context;
     private List<Place> list;
-
+    private boolean saveFragment;
     public PlaceAdapter(Context context, List<Place> list) {
         this.context = context;
         setList(list);
     }
-
+    public PlaceAdapter(Context context, List<Place> list, boolean save) {
+        this.context = context;
+        this.saveFragment = save;
+        setList(list);
+    }
     public void updateListPlace(List<Place> list) {
         setList(list);
         notifyDataSetChanged();
@@ -77,7 +89,20 @@ public class PlaceAdapter extends BaseAdapter {
         placeViewHolder.textViewItemPlaceName.setText(place.getName());
         placeViewHolder.textViewItemDescription.setText(place.getDescription());
         placeViewHolder.textViewItemPlaceAddress.setText(place.getAddress());
-
+        if(saveFragment){
+            PlaceDAO placeDAO = MyApplication.placeDAO;
+            placeViewHolder.btn_removePlace.setVisibility(View.VISIBLE);
+            placeViewHolder.btn_removePlace.setOnClickListener(view1->{
+                placeDAO.delete(place.getId());
+                updateListPlace(placeDAO.getAllPlace());
+            });
+        }
+        view.setOnClickListener( view1 -> {
+                Intent intent = new Intent(context, DetailActivity.class);
+                Log.d("place ok","ne: " + place.toString() );
+                intent.putExtra(ActivityUltis.REQUEST_PUT_PLACE_EXTRA, place);
+                context.startActivity(intent);
+        });
         return view;
     }
 
@@ -90,7 +115,8 @@ public class PlaceAdapter extends BaseAdapter {
         TextView textViewItemPlaceAddress;
         @BindView(R.id.textViewItemDescription)
         TextView textViewItemDescription;
-
+        @BindView(R.id.btn_removePlace)
+        ImageButton btn_removePlace;
 
     }
 }

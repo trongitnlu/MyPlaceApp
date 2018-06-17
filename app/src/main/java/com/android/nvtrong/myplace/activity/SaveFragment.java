@@ -1,5 +1,6 @@
 package com.android.nvtrong.myplace.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,9 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.nvtrong.myplace.ActivityUltis;
 import com.android.nvtrong.myplace.R;
 import com.android.nvtrong.myplace.adapter.PlaceAdapter;
 import com.android.nvtrong.myplace.data.model.Place;
@@ -38,6 +41,7 @@ public class SaveFragment extends Fragment {
     List<Place> listPlace;
     PlaceAdapter placeAdapter;
 
+
     public static SaveFragment newInstance() {
 
         return new SaveFragment();
@@ -51,9 +55,10 @@ public class SaveFragment extends Fragment {
         listPlace = new ArrayList<>();
 
         listPlace = MyApplication.placeDAO.getAllPlace();
-        placeAdapter = new PlaceAdapter(getContext(), listPlace);
+        placeAdapter = new PlaceAdapter(getContext(), listPlace,  true);
 
         listView.setAdapter(placeAdapter);
+        onClickPlaceItem();
         return view;
     }
 
@@ -63,6 +68,10 @@ public class SaveFragment extends Fragment {
         listPlace = MyApplication.placeDAO.getAllPlace();
         placeAdapter.setList(listPlace);
         placeAdapter.notifyDataSetChanged();
+    }
+
+    private void onClickPlaceItem() {
+
     }
 
 }

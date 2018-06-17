@@ -313,9 +313,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         if(mapFragment==null){
-            Toast.makeText(getActivity(), "Null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Map fail!", Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(getActivity(), "K null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Map OK !", Toast.LENGTH_SHORT).show();
             mapFragment.getMapAsync(this);
         }
     }
