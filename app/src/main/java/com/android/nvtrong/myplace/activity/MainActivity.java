@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.android.nvtrong.myplace.ActivityUltis;
 import com.android.nvtrong.myplace.R;
 import com.android.nvtrong.myplace.databinding.ActivityMainBinding;
+import com.android.nvtrong.myplace.dialog.SettingFragment;
 import com.android.nvtrong.myplace.viewModel.MainViewModel;
 import com.android.nvtrong.myplace.viewModel.ViewPagerAdapter;
 
@@ -116,7 +117,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = menuItem.getItemId();
         switch (id){
             case R.id.mnu_setting:
-                Toast.makeText(this, "Ngon", Toast.LENGTH_SHORT).show();
+                SettingFragment settingFragment = SettingFragment.newInstance();
+                settingFragment.show(getFragmentManager(),null);
                 break;
         }
         return false;

@@ -2,12 +2,9 @@ package com.android.nvtrong.myplace.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Handler;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,6 +25,7 @@ import com.android.nvtrong.myplace.data.google.Photos;
 import com.android.nvtrong.myplace.data.google.Result;
 import com.android.nvtrong.myplace.data.model.Place;
 import com.android.nvtrong.myplace.data.model.PlaceDAO;
+import com.android.nvtrong.myplace.extension.SharePreferences;
 import com.android.nvtrong.myplace.service.APIUltis;
 import com.android.nvtrong.myplace.service.ServiceAPI;
 
@@ -56,13 +54,14 @@ public class PlaceActivity extends AppCompatActivity {
     private PlaceDAO placeDAO;
 
     private ProgressDialog progressDialog;
-    private final String MAP_SEARCH_RADIUS = "500";
+    private String MAP_SEARCH_RADIUS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
         ButterKnife.bind(this);
+        MAP_SEARCH_RADIUS = String.valueOf(SharePreferences.getPreferencesRadius(this));
         String types = getIntent().getStringExtra(ActivityUltis.CATEGORY_NAME_EXTRA);
         placeAdapter = new PlaceAdapter(this, places);
         listViewPlace.setAdapter(placeAdapter);
