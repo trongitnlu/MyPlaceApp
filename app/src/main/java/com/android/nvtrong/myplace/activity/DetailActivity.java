@@ -51,6 +51,8 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail_a);
         ButterKnife.bind(this);
         getPlaceParcel();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportParentActivityIntent();
 //        init();
     }
 

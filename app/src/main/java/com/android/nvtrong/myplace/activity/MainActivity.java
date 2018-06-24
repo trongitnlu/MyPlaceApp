@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mTabLayout = (TabLayout) findViewById(R.id.tab);
         mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home_white_24dp);
+        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_grade_white_24dp);
     }
     private void setupBinding(){
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    /*xử lí onclick menu bên trái*/
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         mDrawerLayout.closeDrawers();
         int id = item.getItemId();
@@ -96,11 +99,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return false;
     }
+
     private void startPlaceActivity(String type) {
         Intent intent = new Intent(this, PlaceActivity.class);
         intent.putExtra(ActivityUltis.CATEGORY_NAME_EXTRA, type);
         startActivity(intent);
     }
+
     private void setupMenuToolbar(){
         toolbar.inflateMenu(R.menu.menu);
         toolbar.setOnMenuItemClickListener(this);

@@ -66,6 +66,8 @@ public class PlaceActivity extends AppCompatActivity {
         placeAdapter = new PlaceAdapter(this, places);
         listViewPlace.setAdapter(placeAdapter);
         showListPlaceGoogleMaps(types);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportParentActivityIntent();
         onClickPlaceItem1();
     }
 
