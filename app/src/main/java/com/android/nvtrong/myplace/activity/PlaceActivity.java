@@ -53,7 +53,6 @@ public class PlaceActivity extends AppCompatActivity {
     private PlaceAdapter placeAdapter;
     private PlaceDAO placeDAO;
 
-    private ProgressDialog progressDialog;
     private String MAP_SEARCH_RADIUS;
 
     @Override
@@ -69,73 +68,6 @@ public class PlaceActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportParentActivityIntent();
         onClickPlaceItem1();
-    }
-
-    private void init() {
-//        categoryID = getIntent().getIntExtra(ActivityUltis.CATEGORY_KEY_EXTRA, 0);
-        placeDAO = PlaceDAO.getInstance(this);
-        placeAdapter = new PlaceAdapter(this, places);
-        listViewPlace.setAdapter(placeAdapter);
-        iniProgressDialog();
-//        progressDialog.show();
-        onClickPlaceItem();
-//        getPlaces(categoryID);
-        showListPlaceGoogleMaps(getIntent().getStringExtra(ActivityUltis.CATEGORY_NAME_EXTRA));
-        onClickPlaceItem1();
-
-    }
-
-    private void getPlaces(final int categoryID) {
-        loadingPanel.setVisibility(View.VISIBLE);
-        textViewNoData.setVisibility(View.VISIBLE);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-//                addTestData();
-                places = placeDAO.getListPlaceByCategoryID(categoryID);
-                if (!places.isEmpty()) {
-                    textViewNoData.setVisibility(View.GONE);
-                }
-                placeAdapter.updateListPlace(places);
-//                progressDialog.dismiss();
-                loadingPanel.setVisibility(View.GONE);
-            }
-        }, 1000);
-    }
-
-    public void addTestData() {
-        Place place = new Place.Builder()
-                .setId(0)
-                .setCategoryID(categoryID)
-                .setName("ABC")
-                .setImage(null)
-                .setAddress("1234")
-                .setDescription("Ngon com")
-                .setPlaceLat(0)
-                .setPlaceLng(0)
-                .build();
-        placeDAO = PlaceDAO.getInstance(this);
-        placeDAO.insert(place);
-    }
-
-    private void iniProgressDialog() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setInverseBackgroundForced(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setMessage(getResources().getString(text_progress_load));
-    }
-
-    private void onClickPlaceItem() {
-        listViewPlace.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(PlaceActivity.this, DetailActivity.class);
-                Place place = places.get(i);
-                intent.putExtra(ActivityUltis.PLACE_KEY_PUT_EXTRA, place.getId());
-                startActivityForResult(intent, ActivityUltis.REQUEST_DETAIL_PLACE);
-            }
-        });
     }
 
     private void onClickPlaceItem1() {
