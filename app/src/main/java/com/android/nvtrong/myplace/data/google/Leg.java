@@ -1,8 +1,5 @@
 package com.android.nvtrong.myplace.data.google;
 
-/**
- * Created by nvtrong on 4/10/2018.
- */
 
 public class Leg {
     private Distance distance ;

@@ -168,7 +168,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void getLocation() {
         GPSTracker gpsTracker1 = new GPSTracker(this);
-        Log.d("DDDDDDDDDDD", gpsTracker1.getLatitude() + ", " + gpsTracker1.getLongitude());
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             GPSTracker gpsTracker = new GPSTracker(this);
             currentLocation = new Location(gpsTracker.getLatitude(), gpsTracker.getLongitude());
@@ -198,7 +197,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 } else {
                     String polylines = directionRoot.getRoutes().get(0).getOverview_polyline().getPoints();
                     Leg leg = directionRoot.getRoutes().get(0).getLegs().get(0);
-                    Log.d("DDDDDDDDDD", polylines);
                     View view = findViewById(R.id.viewGroup);
                     Snackbar.make(view, "Distance: " + leg.getDistance().getText() + "\nDuration: " + leg.getDuration().getText(), Snackbar.LENGTH_LONG).show();
                     List<LatLng> decodePath = PolyUtil.decode(polylines);
@@ -263,13 +261,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.my_navigation_items, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
     public void showOnMaps(List<Place> list) {
         for (Place place : list) {
             LatLng latLng = new LatLng(place.getPlaceLat(), place.getPlaceLng());
@@ -283,10 +274,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
                 getDirection(latLng, currentLatLng);
             }
-            Log.d("DDDDShowOnMap", place.toString() + "--" + list.size());
         }
-        Log.d("DDDDShowOnMap", "Exit");
-
     }
 
 }

@@ -1,9 +1,5 @@
 package com.android.nvtrong.myplace.data.google;
 
-/**
- * Created by nvtrong on 4/2/2018.
- */
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Service;

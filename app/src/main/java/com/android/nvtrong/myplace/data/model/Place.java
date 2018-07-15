@@ -6,9 +6,6 @@ import android.text.TextUtils;
 
 import java.util.Arrays;
 
-/**
- * Created by nvtrong on 4/4/2018.
- */
 
 public class Place implements Parcelable {
     private int id;

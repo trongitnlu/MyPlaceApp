@@ -8,7 +8,7 @@ import com.android.nvtrong.myplace.activity.HomeFragment;
 import com.android.nvtrong.myplace.activity.SaveFragment;
 
 
-public class ViewPagerAdapter  extends FragmentStatePagerAdapter {
+public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private static int TAB_COUNT = 2;
 
@@ -24,8 +24,6 @@ public class ViewPagerAdapter  extends FragmentStatePagerAdapter {
                 return HomeFragment.newInstance();
             case 1:
                 return SaveFragment.newInstance();
-//            case 2:
-//                return SettingsFragment.newInstance();
         }
         return null;
     }
@@ -43,9 +41,6 @@ public class ViewPagerAdapter  extends FragmentStatePagerAdapter {
 
             case 1:
                 return SaveFragment.TITLE;
-
-//            case 2:
-//                return SettingsFragment.TITLE;
         }
         return super.getPageTitle(position);
     }

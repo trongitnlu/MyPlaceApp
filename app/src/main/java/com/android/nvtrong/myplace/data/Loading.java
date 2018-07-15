@@ -5,9 +5,6 @@ import android.content.Context;
 
 import com.android.nvtrong.myplace.R;
 
-/**
- * Created by nvtrong on 4/10/2018.
- */
 
 public class Loading extends ProgressDialog {
     public static Loading loading;

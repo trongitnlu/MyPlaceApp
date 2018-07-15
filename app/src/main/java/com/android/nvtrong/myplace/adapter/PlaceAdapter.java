@@ -28,9 +28,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by nvtrong on 4/5/2018.
- */
 
 public class PlaceAdapter extends BaseAdapter {
     private Context context;
@@ -81,10 +78,6 @@ public class PlaceAdapter extends BaseAdapter {
         }
         placeViewHolder = (PlaceViewHolder) view.getTag();
         Place place = list.get(i);
-//        if(place.getImage()!=null){
-//            Bitmap placeBitmap = BitmapFactory.decodeByteArray(place.getImage(),0,place.getImage().length);
-//            placeViewHolder.imageViewItem.setImageBitmap(placeBitmap);
-//        }
         Picasso.get().load(place.getUrlIcon()).placeholder(R.drawable.logo).error(R.drawable.logo).into(placeViewHolder.imageViewItem);
         placeViewHolder.textViewItemPlaceName.setText(place.getName());
         placeViewHolder.textViewItemDescription.setText(place.getDescription());

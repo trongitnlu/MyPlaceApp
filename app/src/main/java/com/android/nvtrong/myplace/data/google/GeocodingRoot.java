@@ -2,10 +2,6 @@ package com.android.nvtrong.myplace.data.google;
 
 import java.util.List;
 
-/**
- * Created by nvtrong on 4/9/2018.
- */
-
 public class GeocodingRoot {
     private List<Result> results;
 

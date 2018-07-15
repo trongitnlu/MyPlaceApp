@@ -7,10 +7,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 
-/**
- * Created by nvtrong on 4/4/2018.
- */
-
 public class PlaceSQLiteHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "place";
     private static final int DB_VERSTION = 1;

@@ -1,8 +1,5 @@
 package com.android.nvtrong.myplace.data;
 
-/**
- * Created by nvtrong on 4/4/2018.
- */
 
 public class DBUltis {
     public static final String PLACE_TBL_NAME = "PLACE";

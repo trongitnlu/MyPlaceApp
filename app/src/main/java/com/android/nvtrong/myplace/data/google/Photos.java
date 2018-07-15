@@ -1,8 +1,5 @@
 package com.android.nvtrong.myplace.data.google;
 
-/**
- * Created by nvtrong on 4/12/2018.
- */
 
 public class Photos {
     String photo_reference;
