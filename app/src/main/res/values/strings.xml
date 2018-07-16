@@ -3,9 +3,6 @@
     <string name="text_no_data">No data avaliable</string>
     <string name="text_progress_load">Loading</string>
     <string name="show_all_on_maps">Show All On Maps</string>
-    <string name="text_place_name">Place Name</string>
-    <string name="text_place_address">Place Address</string>
-    <string name="text_place_description">Place Description</string>
     <string name="google_api_key">AIzaSyBzoazzWU_PcclIczSCiPHncU_DRS6J_WE</string>
     <string name="places_maps_gps_tracking">Places Maps - GPS Tracking</string>
 

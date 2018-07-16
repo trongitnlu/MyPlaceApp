@@ -9,15 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.android.nvtrong.myplace.R;
-import com.android.nvtrong.myplace.adapter.PlaceAdapter;
-import com.android.nvtrong.myplace.data.model.Place;
-import com.android.nvtrong.myplace.extension.MyApplication;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
 /**
@@ -30,11 +23,6 @@ import butterknife.ButterKnife;
  */
 public class SaveFragment extends Fragment {
     public static final String TITLE = "Save";
-    @BindView(R.id.listViewSave)
-    ListView listView;
-    List<Place> listPlace;
-    PlaceAdapter placeAdapter;
-
 
     public static SaveFragment newInstance() {
 
@@ -45,22 +33,12 @@ public class SaveFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_save, container, false);
-        ButterKnife.bind(this, view);
-        listPlace = new ArrayList<>();
-
-        listPlace = MyApplication.placeDAO.getAllPlace();
-        placeAdapter = new PlaceAdapter(getContext(), listPlace,  true);
-
-        listView.setAdapter(placeAdapter);
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        listPlace = MyApplication.placeDAO.getAllPlace();
-        placeAdapter.setList(listPlace);
-        placeAdapter.notifyDataSetChanged();
     }
 
 }

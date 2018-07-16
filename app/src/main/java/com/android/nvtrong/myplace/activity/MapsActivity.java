@@ -4,17 +4,14 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -22,15 +19,9 @@ import android.widget.Toast;
 import com.android.nvtrong.myplace.ActivityUltis;
 import com.android.nvtrong.myplace.R;
 import com.android.nvtrong.myplace.data.Loading;
-import com.android.nvtrong.myplace.data.google.DirectionRoot;
 import com.android.nvtrong.myplace.data.google.GPSTracker;
-import com.android.nvtrong.myplace.data.google.Leg;
 import com.android.nvtrong.myplace.data.google.Location;
-import com.android.nvtrong.myplace.data.google.Route;
 import com.android.nvtrong.myplace.data.model.Place;
-import com.android.nvtrong.myplace.data.model.PlaceDAO;
-import com.android.nvtrong.myplace.service.APIUltis;
-import com.android.nvtrong.myplace.service.ServiceAPI;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -48,16 +39,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.maps.android.PolyUtil;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener {
@@ -180,46 +163,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     Polyline polyline;
 
-    private void getDirection(LatLng origin, LatLng destination) {
-        Log.d("DDD_GetDirecting", "Please");
-        ServiceAPI serviceAPI = APIUltis.getData();
-        String originAddress = String.valueOf(origin.latitude) + "," + String.valueOf(origin.longitude);
-        String destinationAddress = String.valueOf(destination.latitude) + "," + String.valueOf(destination.longitude);
-        Call<DirectionRoot> rootCall = serviceAPI.getDirection(originAddress, destinationAddress);
-        rootCall.enqueue(new Callback<DirectionRoot>() {
-            @Override
-            public void onResponse(Call<DirectionRoot> call, Response<DirectionRoot> response) {
-                DirectionRoot directionRoot = response.body();
-                List<Route> routes = directionRoot.getRoutes();
-                if (routes == null || routes.isEmpty()) {
-                    Toast.makeText(MapsActivity.this, "Not found address!", Toast.LENGTH_SHORT).show();
-                } else {
-                    String polylines = directionRoot.getRoutes().get(0).getOverview_polyline().getPoints();
-                    Leg leg = directionRoot.getRoutes().get(0).getLegs().get(0);
-                    View view = findViewById(R.id.viewGroup);
-                    Snackbar.make(view, "Distance: " + leg.getDistance().getText() + "\nDuration: " + leg.getDuration().getText(), Snackbar.LENGTH_LONG).show();
-                    List<LatLng> decodePath = PolyUtil.decode(polylines);
-                    PolylineOptions polylineOptions = new PolylineOptions().addAll(decodePath);
-                    polyline = googleMap.addPolyline(polylineOptions);
-                    polyline.setColor(Color.BLUE);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DirectionRoot> call, Throwable t) {
-                Toast.makeText(MapsActivity.this, "Error!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
     @Override
     public boolean onMarkerClick(Marker marker) {
-        if (polyline != null) {
-            polyline.remove();
-        }
-        LatLng currentLatLng = new LatLng(currentLocation.getLat(), currentLocation.getLng());
-        getDirection(currentLatLng, marker.getPosition());
         return false;
     }
 
@@ -269,9 +214,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .title(place.getName());
             googleMap.addMarker(markerOptions);
             if (list.size() == 1) {
-                LatLng currentLatLng = new LatLng(currentLocation.getLat(), currentLocation.getLng());
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
-                getDirection(latLng, currentLatLng);
             }
         }
     }

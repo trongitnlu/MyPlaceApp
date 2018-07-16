@@ -24,9 +24,6 @@
             android:name=".activity.PlaceActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
 
-        <activity
-            android:name=".activity.DetailActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".activity.MapsActivity"></activity>
         <activity android:name=".activity.MainActivity">
             <intent-filter>
