@@ -1,13 +1,9 @@
 package com.android.nvtrong.myplace.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,8 +20,6 @@ import com.android.nvtrong.myplace.data.google.MapsUltis;
 import com.android.nvtrong.myplace.data.google.Photos;
 import com.android.nvtrong.myplace.data.google.Result;
 import com.android.nvtrong.myplace.data.model.Place;
-import com.android.nvtrong.myplace.data.model.PlaceDAO;
-import com.android.nvtrong.myplace.extension.SharePreferences;
 import com.android.nvtrong.myplace.service.APIUltis;
 import com.android.nvtrong.myplace.service.ServiceAPI;
 
@@ -38,8 +32,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.android.nvtrong.myplace.R.string.text_progress_load;
-
 public class PlaceActivity extends AppCompatActivity {
     @BindView(R.id.listViewPlace)
     ListView listViewPlace;
@@ -51,20 +43,17 @@ public class PlaceActivity extends AppCompatActivity {
     private List<Place> places = new ArrayList<>();
     private PlaceAdapter placeAdapter;
 
-    private String MAP_SEARCH_RADIUS;
+    private String MAP_SEARCH_RADIUS = "500";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
         ButterKnife.bind(this);
-        MAP_SEARCH_RADIUS = String.valueOf(SharePreferences.getPreferencesRadius(this));
         String types = getIntent().getStringExtra(ActivityUltis.CATEGORY_NAME_EXTRA);
         placeAdapter = new PlaceAdapter(this, places);
         listViewPlace.setAdapter(placeAdapter);
         showListPlaceGoogleMaps(types);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportParentActivityIntent();
     }
 
     public void onClick(View view) {

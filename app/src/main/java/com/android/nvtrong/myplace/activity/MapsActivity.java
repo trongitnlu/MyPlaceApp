@@ -167,7 +167,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void getLocation() {
-        GPSTracker gpsTracker1 = new GPSTracker(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             GPSTracker gpsTracker = new GPSTracker(this);
             currentLocation = new Location(gpsTracker.getLatitude(), gpsTracker.getLongitude());

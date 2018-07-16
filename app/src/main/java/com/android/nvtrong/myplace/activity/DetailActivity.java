@@ -32,8 +32,6 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.imageView)
     ImageView imageView;
 
-    private int place_ID;
-    private PlaceDAO placeDAO;
     Place place;
 
     @Override
@@ -42,8 +40,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
         getPlaceParcel();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportParentActivityIntent();
+
     }
 
     private void getPlaceParcel() {
@@ -54,7 +51,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void loadPlace(Place place) {
-        placeDAO = PlaceDAO.getInstance(this);
         Picasso.get().load(place.getUrlIcon()).placeholder(R.drawable.location).error(R.drawable.logo).into(imageView);
 
         editTextPlaceName.setText(place.getName());

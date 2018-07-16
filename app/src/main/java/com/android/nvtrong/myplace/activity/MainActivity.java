@@ -2,6 +2,7 @@ package com.android.nvtrong.myplace.activity;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -10,21 +11,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.android.nvtrong.myplace.ActivityUltis;
 import com.android.nvtrong.myplace.R;
 import com.android.nvtrong.myplace.databinding.ActivityMainBinding;
-import com.android.nvtrong.myplace.dialog.SettingFragment;
 import com.android.nvtrong.myplace.viewModel.MainViewModel;
 import com.android.nvtrong.myplace.viewModel.ViewPagerAdapter;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Toolbar.OnMenuItemClickListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     ActivityMainBinding binding;
     MainViewModel viewModel;
     DrawerLayout mDrawerLayout;
@@ -42,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setListener();
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setupMenuToolbar();
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
@@ -56,8 +52,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mTabLayout = (TabLayout) findViewById(R.id.tab);
         mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home_white_24dp);
-        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_grade_white_24dp);
     }
     private void setupBinding(){
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
@@ -105,28 +99,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         intent.putExtra(ActivityUltis.CATEGORY_NAME_EXTRA, type);
         startActivity(intent);
     }
-
-    private void setupMenuToolbar(){
-        toolbar.inflateMenu(R.menu.menu);
-        toolbar.setOnMenuItemClickListener(this);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem menuItem) {
-        int id = menuItem.getItemId();
-        switch (id){
-            case R.id.mnu_setting:
-                SettingFragment settingFragment = SettingFragment.newInstance();
-                settingFragment.show(getFragmentManager(),null);
-                break;
-        }
-        return false;
-    }
-
 }

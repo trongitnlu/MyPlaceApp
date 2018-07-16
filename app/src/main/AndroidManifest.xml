@@ -20,15 +20,13 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activity.PlaceActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:parentActivityName=".activity.MainActivity">
+        <activity
+            android:name=".activity.PlaceActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
 
-        </activity>
-        <activity android:name=".activity.DetailActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:parentActivityName=".activity.PlaceActivity"
-            />
+        <activity
+            android:name=".activity.DetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".activity.MapsActivity"></activity>
         <activity android:name=".activity.MainActivity">
             <intent-filter>
