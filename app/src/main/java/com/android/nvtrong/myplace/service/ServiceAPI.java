@@ -1,6 +1,5 @@
 package com.android.nvtrong.myplace.service;
 
-import com.android.nvtrong.myplace.data.google.DirectionRoot;
 import com.android.nvtrong.myplace.data.google.GeocodingRoot;
 
 import retrofit2.Call;
