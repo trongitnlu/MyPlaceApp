@@ -10,11 +10,6 @@ import retrofit2.http.Query;
 
 public interface ServiceAPI {
 
-    @GET("directions/json")
-    Call<DirectionRoot> getDirection(@Query("origin") String origin, @Query("destination") String destination);
-
     @GET("place/nearbysearch/json")
     Call<GeocodingRoot> getLocationByType(@Query("location") String location, @Query("radius") String radius, @Query("type") String type, @Query("key") String key);
-
-
 }
