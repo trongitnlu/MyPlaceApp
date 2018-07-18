@@ -8,3 +8,6 @@
 /build
 /captures
 .externalNativeBuild
+local.properties
+/app.iml
+/.idea/misc.xml
